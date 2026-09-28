@@ -25,3 +25,19 @@ def test_starts_at_N0():
 #   Check that the simulation's AVERAGE over many seeds is close to the
 #   physical law  N0 * exp(-lam * t).
 #   Which pytest tool compares floating-point values with a tolerance?
+
+def test_rejects_negative_rate():
+    with pytest.raises(ValueError):
+        simulate(1000, -0.1)
+
+
+def test_matches_law():
+    N0, lam, dt, steps = 1000, 0.4, 0.05, 20
+    t = dt * steps
+    finals = []
+    for seed in range(50):
+        counts = simulate(N0, lam, dt=dt, steps=steps, seed=seed)
+        finals.append(counts[-1])
+    average = np.mean(finals)
+    expected = N0 * np.exp(-lam * t)
+    assert average == pytest.approx(expected, rel=0.02)

@@ -28,8 +28,8 @@ Create the environment for a given lab:
 
 ## PW1 --- Lab B
 
-**What the data showed:** The observed counts decrease over time, [məsələn: quickly at the beginning and more slowly later, with small random scatter].
+**What the data showed:** The observed counts start at about 5000 and decrease over time, quickly at first and then more slowly, until they are close to zero after about t = 12. The points show only very small scatter.
 
-**Match with the analytical law:** [Öz qərarın. Məsələn: Yes, the observed points follow the same exponential shape as N0*exp(-0.3 t), with only small deviations, so the data agree with the law.]
+**Match with the analytical law:** Yes, the observed points follow the same exponential decay shape as the analytical curve N0*exp(-0.3 t), where N0 is the first observed count. On the shared axes the two panels look the same, so the data agree with the law.
 
 **Snakemake pipeline:** The Snakefile has one rule that builds figure.png from decay_observed.csv by running plot.py, and Snakemake only reruns it when its input has changed.

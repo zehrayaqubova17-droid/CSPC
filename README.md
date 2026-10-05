@@ -33,3 +33,9 @@ Create the environment for a given lab:
 **Match with the analytical law:** Yes, the observed points follow the same exponential decay shape as the analytical curve N0*exp(-0.3 t), where N0 is the first observed count. On the shared axes the two panels look the same, so the data agree with the law.
 
 **Snakemake pipeline:** The Snakefile has one rule that builds figure.png from decay_observed.csv by running plot.py, and Snakemake only reruns it when its input has changed.
+
+## PW2 --- Lab A
+
+- **Mean acceleration:** -8.58 m/s² (std = 28.7 m/s²), roughly consistent with -g = -9.81 m/s², so the object is in free fall. The mean deviates from -9.81 because of the large noise in the acceleration.
+- **Why the acceleration is noisy:** A derivative compares nearby measurements, so it amplifies noise. The acceleration is a second derivative, so the noise is amplified twice, while the position is not differentiated at all.
+- **Integrating back:** Integrating the noisy acceleration twice recovered the position with a maximum difference of 0.78 m from the original, showing that integration suppresses noise.

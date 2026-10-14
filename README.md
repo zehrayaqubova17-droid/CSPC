@@ -55,3 +55,32 @@ Create the environment for a given lab:
 
 ### Part 5: titration (bonus)
 - The equivalence point is at X mL, where the slope of the pH curve is largest (titration.png).
+
+## PW3 --- Data, Distributions, Testing, Causation
+
+Data: Heart Disease (Cleveland), UCI Machine Learning Repository, Janosi, Steinbrunn, Pfisterer, Detrano (1989), https://doi.org/10.24432/C52P4X. The original 0--4 target was converted to 0/1 (0 = no disease, 1--4 = disease). The chemicals dataset is synthetic (Moodle).
+
+### Session 1: distributions and normality
+
+- age is roughly bell-shaped with a slight left skew. chol and trestbps are right-skewed (chol has one extreme value near 560). thalach is left-skewed (distributions.png).
+- Normality verdicts (Q-Q plots in qqplots.png and Shapiro-Wilk test):
+  - age: approximately normal. The Q-Q plot is almost a straight line and the skew is small (-0.21). The Shapiro test formally rejects normality (p = 0.006), but with n = 303 this test detects even tiny deviations, so I judged by the plot and the skew together.
+  - chol: not normal (Shapiro p = 5.9e-09, skew = 1.13). The upper tail bends strongly away from the line in the Q-Q plot.
+  - trestbps: not normal (Shapiro p = 1.8e-06, skew = 0.70). The right tail bends away from the line.
+  - thalach: not normal (Shapiro p = 7.0e-05, skew = -0.53). The lower tail bends away from the line.
+
+### Session 2: heart rate and age
+
+- Do heart-disease patients reach a different maximum heart rate? thalach is not normal (Session 1), so I compared the two groups with the Mann-Whitney U test (rank-based, no normality assumption). I also ran a Welch t-test as a check.
+  - Disease (n = 139): mean thalach = 139.26 bpm, SEM = 1.92 (95% CI half-width 3.76).
+  - Healthy (n = 164): mean thalach = 158.38 bpm, SEM = 1.50 (95% CI half-width 2.94).
+  - Mann-Whitney U = 5806.5, p = 1.9e-13. Welch t = -7.86, p = 9.1e-14.
+  - Conclusion: patients with heart disease reach a significantly lower maximum heart rate (about 19 bpm lower). The 95% confidence intervals of the two means do not overlap (thalach_means.png), so the plot agrees with the test.
+- age vs thalach: Spearman rho = -0.392 (p = 1.5e-12) and Pearson r = -0.394 (p = 1.1e-12). Maximum heart rate decreases as age increases; the relationship is negative and moderate (age_vs_thalach.png). I rely mainly on Spearman because thalach is not normal.
+- Bonus: the target proportions are 0.541 (no disease) and 0.459 (disease). Entropy = 0.995 bits (maximum 1 for two categories) and Gini = 0.497 (maximum 0.5), so the column is almost perfectly balanced, i.e. hard to guess.
+
+### Chemical mystery
+
+- Naive analysis: cadmium has r = 0.88 with malignancy and benzene only r = 0.385, so at face value cadmium appears to be the cause (chem_naive.png).
+- Third variable: pollution_index is strongly correlated with both cadmium and malignancy (r = 0.90 with malignancy). I restricted the data to patients with pollution within +-5 of the median (49.5, n = 99) and recomputed the associations: cadmium drops to r = 0.00 (p = 0.997), while benzene stays strong at r = 0.652 (p = 2.6e-13) (chem_restricted.png). A partial correlation controlling for pollution gives the same result: cadmium 0.013 (p = 0.69), benzene 0.755 (p = 7e-185).
+- Conclusion: benzene is the real cause of malignancy. Cadmium only looked guilty because pollution raises both cadmium and malignancy (confounding). Benzene's association became stronger after the control because the pollution-driven variation in malignancy was hiding it. Correlation alone did not identify the cause; comparing patients with similar pollution levels did.

@@ -39,3 +39,19 @@ Create the environment for a given lab:
 - **Mean acceleration:** -8.58 m/s² (std = 28.7 m/s²), roughly consistent with -g = -9.81 m/s², so the object is in free fall. The mean deviates from -9.81 because of the large noise in the acceleration.
 - **Why the acceleration is noisy:** A derivative compares nearby measurements, so it amplifies noise. The acceleration is a second derivative, so the noise is amplified twice, while the position is not differentiated at all.
 - **Integrating back:** Integrating the noisy acceleration twice recovered the position with a maximum difference of 0.78 m from the original, showing that integration suppresses noise.
+
+## PW2 --- Lab B
+
+### Part 2: three optimisation methods
+- On the convex function f(x) = (x-3)^2 + 1, gradient descent, Newton's method and SLSQP all reached x = 3.
+- On g(x) = x^4 - 3x^2 + x + 5, the methods did not always agree. From x0 = 0, Newton's method converged to x = 0.17, where g'' < 0, so it is a maximum, not a minimum, while gradient descent and SLSQP reached the minimum at x = -1.30. From x0 = 2, gradient descent and Newton reached the local minimum at x = 1.13.
+- The starting point and the algorithm both matter on a complicated landscape: g has two minima (x = -1.30 and x = 1.13) and a maximum, and the result depends on which one is closest to the start. Newton finds any stationary point, so g'' must be checked.
+
+### Part 3: reaction rate
+- Fitted rate constant: k = X (close to 0.25), and the fitted curve passes through the data (kinetics.png).
+
+### Part 4: equilibrium
+- Newton and SLSQP agree: x = X. Equilibrium amounts: H2 = X mol, I2 = X mol, HI = X mol (equilibrium.png).
+
+### Part 5: titration (bonus)
+- The equivalence point is at X mL, where the slope of the pH curve is largest (titration.png).
